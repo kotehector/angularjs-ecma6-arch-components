@@ -1,0 +1,36 @@
+<md-table-container>
+		<table md-table md-row-select multiple ng-model="$ctrl.selectedFavs">
+			<thead md-head md-order="myOrder">
+				<tr md-row>
+					<th md-column md-order-by="title">
+						<span>Title</span>
+					</th>
+					<th md-column>
+						<span>Image</span>
+					</th>
+					<th md-column>
+							<span>Actions</span>
+						</th>
+				</tr>
+			</thead>
+			<tbody md-body>
+				<tr md-row md-select="item" md-select-id="$index" md-auto-select ng-repeat="item in $ctrl.items | orderBy: myOrder | 
+												limitTo: $ctrl.query.limit: ($ctrl.query.page - 1) * $ctrl.query.limit | 
+												filter: $ctrl.query.filter">
+					<td md-cell>{{ item.title }}</td>
+					<td md-cell>
+							<img ng-src="src/app/img/{{ item.image }}" class="md-avatar">
+					</td>
+					<td md-cell>
+						<button 
+							class="md-icon-button md-button md-ink-ripple" 
+							type="button" 
+							ng-click="$ctrl.deleteItem(item, $index)">
+								<md-icon class="material-icons">delete</md-icon>
+							<div class="md-ripple-container"></div>
+						</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</md-table-container>

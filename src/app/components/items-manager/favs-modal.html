@@ -1,0 +1,80 @@
+<md-dialog aria-label="Favorites List">
+		<md-content flex layout-padding>
+		<md-dialog-content class="md-dialog-content">
+			<h1 class="md-display-1">Favorites List</h1>
+			<!-- Operations ToolBar -->
+			<md-toolbar 
+				class="md-table-toolbar md-default" 
+				ng-if="$ctrl.selectedFavs.length">
+				<div class="md-toolbar-tools">
+					<div>{{ $ctrl.selectedFavs.length }} seleccionados</div>
+					<div flex></div>
+					<form flex name="filter.form">
+						<input 
+							type="text" 
+							ng-model="$ctrl.query.filter" 
+							ng-model-options="$ctrl.filter.options" 
+							placeholder="buscar..." 
+							aria-invalid="false">
+					</form>
+				</div>
+			</md-toolbar>
+			<md-table-container>
+				<table 
+					md-table 
+					md-row-select 
+					multiple 
+					ng-model="$ctrl.selectedFavs">
+					<thead md-head md-order="myOrder">
+						<tr md-row>
+							<th md-column md-order-by="title">
+								<span>Title</span>
+							</th>
+							<th md-column>
+								<span>Image</span>
+							</th>
+							<th md-column>
+									<span>Actions</span>
+								</th>
+						</tr>
+					</thead>
+					<tbody md-body>
+						<tr 
+							md-row 
+							md-select="item" 
+							md-select-id="$index" 
+							md-auto-select 
+							ng-repeat="item in $ctrl.listFavs | orderBy: myOrder | 
+								limitTo: $ctrl.query.limit: ($ctrl.query.page - 1) * $ctrl.query.limit | 
+								filter: $ctrl.query.filter">
+							<td md-cell>{{ item.title }}</td>
+							<td md-cell>
+									<img ng-src="src/app/img/{{ item.image }}">
+							</td>
+							<td md-cell>
+								<md-button 
+									class="md-fab md-primary md-hue-2" 
+									type="button" 
+									ng-click="$ctrl.deleteItem(item, $index)">
+										<md-icon class="material-icons">delete</md-icon>
+									<div class="md-ripple-container"></div>
+								</md-button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</md-table-container>
+
+			<md-table-pagination md-limit="$ctrl.query.limit" md-limit-options="[5, 10, 15]" md-page="$ctrl.query.page" md-total="{{$ctrl.listFavs.length}}">
+			</md-table-pagination>
+		</md-dialog-content>
+
+		<md-dialog-actions>
+			<md-button ng-click="$ctrl.close()">
+				Cerrar
+			</md-button>
+		</md-dialog-actions>
+	</md-content>
+
+</md-dialog>
+

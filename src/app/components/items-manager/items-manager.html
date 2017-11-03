@@ -1,0 +1,134 @@
+<md-content flex layout-padding>
+	<!-- Main ToolBar -->
+	<md-toolbar 
+		class="md-table-toolbar md-default"
+		ng-if="!$ctrl.filter.show">
+		<div class="md-toolbar-tools">
+			<div flex></div>
+			<md-button 
+				class="md-fab md-mini md-primary" 
+				type="button" 
+				ng-click="$ctrl.showFavoritesList($event, $ctrl.favorites)">
+				<md-icon class="material-icons">featured_play_list</md-icon>
+				<div class="md-ripple-container"></div>
+			</md-button>
+			<md-button 
+				class="md-fab md-mini md-primary" 
+				type="button" 
+				ng-click="$ctrl.filter.show = true">
+				<md-icon class="material-icons">search</md-icon>
+				<div class="md-ripple-container"></div>
+			</md-button>
+		</div>
+	</md-toolbar>
+
+	<!-- Search ToolBar -->
+	<md-toolbar 
+		class="md-table-toolbar md-default"
+		ng-if="$ctrl.filter.show">
+		<div class="md-toolbar-tools">
+			<md-icon class="material-icons">search</md-icon>
+			<form 
+				flex 
+				name="filter.form">
+				<input 
+					type="text" 
+					ng-model="$ctrl.query.filter" 
+					ng-model-options="$ctrl.filter.options" 
+					placeholder="buscar..."
+					aria-invalid="false">
+			</form>
+			<button 
+				class="md-fab md-mini md-primary" 
+				type="button"
+				ng-click="$ctrl.filter.show = false" 
+				aria-label="close">
+					<md-icon class="material-icons">close</md-icon>
+					<div class="md-ripple-container"></div>
+			</button>
+	</div>
+	</md-toolbar>
+
+	<!-- Operations ToolBar -->
+	<md-toolbar 
+		class="md-table-toolbar md-default"
+		ng-if="$ctrl.selected.length">
+		<div class="md-toolbar-tools">
+			<div>{{ $ctrl.selected.length }} items for add to favorites</div>
+			<div flex></div>
+			<button 
+			class="md-fab md-mini md-primary" 
+				type="button" 
+				ng-click="$ctrl.addToFavorite($ctrl.selected)">
+				<md-icon class="material-icons">favorite</md-icon>
+				<div class="md-ripple-container"></div>
+			</button>
+		</div>
+	</md-toolbar>
+	
+	<md-table-container>
+		<h1 class="md-display-1">Items List</h1>
+		<table 
+			md-table
+			md-row-select
+			multiple
+			md-progress="$ctrl.promise"
+			ng-model="$ctrl.selected">
+			<thead 
+				md-head
+				md-order="myOrder">
+				<tr md-row>
+					<th 
+						md-column
+						md-order-by="title">
+						<span>Title</span>
+					</th>
+					<th 
+						md-column
+						md-order-by="description">
+						<span>Description</span>
+					</th>
+					<th 
+						md-column 
+						md-numeric
+						md-order-by="price">
+						<span>Price</span>
+					</th>
+					<th 
+						md-column
+						md-order-by="email">
+						<span>Email</span>
+					</th>
+					<th 
+						md-column>
+						<span>Image</span>
+				</th>
+				</tr>
+			</thead>
+			<tbody md-body>
+				<tr md-row
+						md-select="item"
+						md-select-id="$index"
+						md-auto-select 
+						ng-repeat="item in $ctrl.items | orderBy: myOrder | 
+											limitTo: $ctrl.query.limit: ($ctrl.query.page - 1) * $ctrl.query.limit | 
+											filter: $ctrl.query.filter">
+					<td md-cell>{{ item.title }}</td>
+					<td md-cell>{{ item.description}}</td>
+					<td md-cell>{{ item.price | currency: '€' : 2}}</td>
+					<td md-cell>{{ item.email }}</td>
+					<td md-cell>
+						<img ng-src="src/app/img/{{ item.image }}">
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</md-table-container>
+
+	<md-table-pagination 
+		md-limit="$ctrl.query.limit" 
+		md-limit-options="[5, 10, 15]" 
+		md-page="$ctrl.query.page" 
+		md-total="{{$ctrl.items.length}}">
+	</md-table-pagination>
+</md-content>
