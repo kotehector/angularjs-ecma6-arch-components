@@ -51,7 +51,6 @@ module.exports = {
       {
 				test: /\.html$/,
 				use: [
-          { loader:'ngtemplate-loader?relativeTo=' + (path.resolve(__dirname, '/')) },
           { loader: 'html-loader' }
         ]
 			},
